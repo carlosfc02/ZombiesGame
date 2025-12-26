@@ -5,27 +5,49 @@ public class Shoot : MonoBehaviour
     public Camera camaraJugador;
     public float rango = 100f;
 
+    // 🔹 NUEVO
+    public GameObject balaPrefab;
+    public float velocidadBala = 50f;
+    public float tiempoVidaBala = 3f;
+
     void Update()
     {
-        // Si hacemos clic izquierdo (Boton 0)
+        // Clic izquierdo
         if (Input.GetButtonDown("Fire1"))
         {
-            DispararRaycast();
+            Disparar();
         }
     }
 
-    void DispararRaycast()
+    void Disparar()
     {
+        // =========================
+        // 1️⃣ DISPARO VISUAL (BALA)
+        // =========================
+        GameObject bala = Instantiate(
+            balaPrefab,
+            camaraJugador.transform.position,
+            camaraJugador.transform.rotation
+        );
+
+        Rigidbody rb = bala.GetComponent<Rigidbody>();
+        rb.linearVelocity = camaraJugador.transform.forward * velocidadBala;
+
+        Destroy(bala, tiempoVidaBala);
+
+        // =========================
+        // 2️⃣ RAYCAST (LÓGICA)
+        // =========================
         RaycastHit hit;
-        // Lanza una línea desde el centro de la cámara hacia adelante
-        if (Physics.Raycast(camaraJugador.transform.position, camaraJugador.transform.forward, out hit, rango))
+        if (Physics.Raycast(camaraJugador.transform.position,
+                            camaraJugador.transform.forward,
+                            out hit,
+                            rango))
         {
             Debug.Log("He impactado en: " + hit.transform.name);
 
-            // Verificamos si lo que golpeamos tiene el tag "Enemy"
             if (hit.transform.CompareTag("Enemy"))
             {
-                // Destruimos el objeto golpeado
                 Destroy(hit.transform.gameObject);
             }
         }
