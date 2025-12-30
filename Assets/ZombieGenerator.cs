@@ -2,29 +2,42 @@ using UnityEngine;
 
 public class ZombieGenerator : MonoBehaviour
 {
-    public GameObject zombiePrefab; // El molde del zombie
-    public Transform[] puntosDeSpawn; // Lugares donde pueden nacer
+    public GameObject zombiePrefab;
+    public Transform[] puntosDeSpawn;
     
-    public float tiempoEntreOlas = 3f; // Segundos entre zombies
-    private float tiempoProximoSpawn = 0f;
+    public float tiempoEntreSpawns = 3f;
+    public float tiempoMinimoSpawn = 0.5f;
+    public float reduccionPorSpawn = 0.1f;
+
+    private float tiempoRestante;
+
+    void Start()
+    {
+        tiempoRestante = tiempoEntreSpawns;
+    }
 
     void Update()
     {
-        // Si el tiempo actual supera el tiempo programado...
-        if (Time.time >= tiempoProximoSpawn)
+        tiempoRestante -= Time.deltaTime;
+
+        if (tiempoRestante <= 0)
         {
             SpawnZombie();
-            tiempoProximoSpawn = Time.time + tiempoEntreOlas;
+            
+            if (tiempoEntreSpawns > tiempoMinimoSpawn)
+            {
+                tiempoEntreSpawns -= reduccionPorSpawn;
+            }
+
+            tiempoRestante = tiempoEntreSpawns;
         }
     }
 
     void SpawnZombie()
     {
-        // 1. Elegir un punto aleatorio
-        int indiceAleatorio = Random.Range(0, puntosDeSpawn.Length);
-        Transform puntoElegido = puntosDeSpawn[indiceAleatorio];
+        if (puntosDeSpawn.Length == 0) return;
 
-        // 2. Crear el zombie
-        Instantiate(zombiePrefab, puntoElegido.position, puntoElegido.rotation);
+        int indice = Random.Range(0, puntosDeSpawn.Length);
+        Instantiate(zombiePrefab, puntosDeSpawn[indice].position, Quaternion.identity);
     }
 }

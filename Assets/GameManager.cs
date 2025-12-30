@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         ActualizarTexto();
-        textoZombies.gameObject.SetActive(false); // 👈 oculto al inicio
+        textoZombies.gameObject.SetActive(false); 
     }
 
     void Update()
