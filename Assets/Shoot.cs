@@ -48,6 +48,7 @@ public class Shoot : MonoBehaviour
 
             if (hit.transform.CompareTag("Enemy"))
             {
+                GameManager.instancia.ZombieMuerto();
                 Destroy(hit.transform.gameObject);
             }
         }
