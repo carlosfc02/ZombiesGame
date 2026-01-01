@@ -49,7 +49,18 @@ public class Shoot : MonoBehaviour
             if (hit.transform.CompareTag("Enemy"))
             {
                 GameManager.instancia.ZombieMuerto();
-                Destroy(hit.transform.gameObject);
+
+                // 🔹 NUEVO: activar animación de muerte y destruir al terminar
+                ZombieAI zombieAI = hit.transform.GetComponent<ZombieAI>();
+                if (zombieAI != null)
+                {
+                    zombieAI.Morir(); // Este método debe estar en ZombieAI
+                }
+                else
+                {
+                    // Fallback: si no tiene ZombieAI, lo destruye instantáneamente
+                    Destroy(hit.transform.gameObject);
+                }
             }
         }
     }
