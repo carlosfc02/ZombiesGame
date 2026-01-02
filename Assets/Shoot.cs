@@ -5,14 +5,12 @@ public class Shoot : MonoBehaviour
     public Camera camaraJugador;
     public float rango = 100f;
 
-    // 🔹 NUEVO
     public GameObject balaPrefab;
     public float velocidadBala = 50f;
     public float tiempoVidaBala = 3f;
 
     void Update()
     {
-        // Clic izquierdo
         if (Input.GetButtonDown("Fire1"))
         {
             Disparar();
@@ -21,9 +19,6 @@ public class Shoot : MonoBehaviour
 
     void Disparar()
     {
-        // =========================
-        // 1️⃣ DISPARO VISUAL (BALA)
-        // =========================
         GameObject bala = Instantiate(
             balaPrefab,
             camaraJugador.transform.position,
@@ -35,9 +30,6 @@ public class Shoot : MonoBehaviour
 
         Destroy(bala, tiempoVidaBala);
 
-        // =========================
-        // 2️⃣ RAYCAST (LÓGICA)
-        // =========================
         RaycastHit hit;
         if (Physics.Raycast(camaraJugador.transform.position,
                             camaraJugador.transform.forward,
@@ -50,15 +42,13 @@ public class Shoot : MonoBehaviour
             {
                 GameManager.instancia.ZombieMuerto();
 
-                // 🔹 NUEVO: activar animación de muerte y destruir al terminar
                 ZombieAI zombieAI = hit.transform.GetComponent<ZombieAI>();
                 if (zombieAI != null)
                 {
-                    zombieAI.Morir(); // Este método debe estar en ZombieAI
+                    zombieAI.Morir(); 
                 }
                 else
                 {
-                    // Fallback: si no tiene ZombieAI, lo destruye instantáneamente
                     Destroy(hit.transform.gameObject);
                 }
             }

@@ -11,7 +11,7 @@ public class ZombieAI : MonoBehaviour
     private Collider col;
 
     public float distanciaAtaque = 2f;
-    public bool estaMuerto = false; // Flag para saber si murió
+    public bool estaMuerto = false; 
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class ZombieAI : MonoBehaviour
 
     void Update()
     {
-        if (estaMuerto) return; // No hace nada si está muerto
+        if (estaMuerto) return; 
 
         if (objetivo != null)
         {
@@ -53,11 +53,9 @@ public class ZombieAI : MonoBehaviour
         agente.isStopped = true;
         animator.SetTrigger("Muerto");
 
-        // 🔹 DESACTIVAR FÍSICA PARA NO BUGUEAR
         if (rb != null) rb.isKinematic = true;
         if (col != null) col.isTrigger = true;
 
-        // Esperar a que la animación termine
         StartCoroutine(DestruirAlFinal());
     }
 

@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        // Mostrar mientras TAB está presionado
         if (Input.GetKey(KeyCode.Tab))
         {
             textoZombies.gameObject.SetActive(true);
